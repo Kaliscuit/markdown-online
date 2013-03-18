@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+	<ul class=entries>
+		{% for article in articles %}
+		<h2><a href="{{ url_for('read', slug=article.slug)}}">{{ article.title }}</h2>
+		<em>{{ article.time }}</em>
+		{% else %}
+		<li><em>Nothing here</em>
+		{% endfor %}
+	</ul>
+{% endblock %}
