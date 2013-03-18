@@ -1,4 +1,18 @@
 {% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+<link type="text/css" href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+<link type="text/css" href="{{ url_for('static', filename='css/hallo.css') }}" rel="stylesheet">
+<link type="text/css" href="{{ url_for('static', filename='css/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-1.10.0.custom.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/hallo.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/showdown.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/to-markdown.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/editor.js') }}"></script>
+{% endblock %}
 {% block body %}
 	<form action="{{ url_for('add_article') }}" method=post class=add-entry>
 		<dl>
@@ -6,8 +20,15 @@
 			<dd><input type=text size=30 name=title>
 			<dt>Slug:
 			<dd><input type=text size=30 name=slug>
-			<dt>Markdown Text:
-			<dd><textarea name=markdown row=5 cols=40></textarea>
+			<dt>Markdown Text:	
+			<article>
+			  <div class="editable" contenteditable="true">
+				  <p><em>Type Doc Here</em></p>
+			  </div>
+			</article>
+
+			<textarea id="source" name=markdown></textarea>
+				
 			<dd><input type=submit value=Share>
 		</dl>
 	</form>
