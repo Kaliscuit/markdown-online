@@ -1,14 +1,41 @@
 {% extends "layout.html" %}
 {% block body %}
-	<h2>Login</h2>
-	{% if error %}<p class=error><strong>Error:</strong>{{ error }}{% endif %}
-	<form action="{{ url_for('login') }}" method=post>
-		<dl>
-			<dt>Username:
-			<dd><input type=text name=username>
-			<dt>Password:
-			<dd><input type=password name=password>
-			<dd><input type=submit value=Login>
-		</dl>
-	</form>
+	<style>
+	.secondary {
+		width: 80% !important;
+	}
+	</style>
+	<div class="page-header">
+        <div class="page-header-content">
+            <h1>Login<small> Form</small></h1>
+            <a class="back-button big page-back" href="/"></a>
+        </div>
+    </div>
+	<h2></h2>
+	{% if error %}
+	<div class="span5">
+        <div class="notices">
+            <div class="bg-color-red">
+                <a class="close close-parent" href="#"></a>
+                <div class="notice-header fg-color-yellow">Error:</div>
+                <div class="notice-text">{{ error }}</div>
+            </div>
+        </div>
+    </div>
+	{% endif %}
+	
+	<div class="span5">
+
+    <form method="post" action="{{ url_for('login') }}">
+        <div class="input-control text">
+            <input type="text" name="username" placeholder="Username">
+            <button class="helper" tabindex="-1" type="button"></button>
+        </div>
+		<div class="input-control password">
+            <input type="password" name="password" placeholder="Password">
+            <button class="helper" tabindex="-1" type="button"></button>
+        </div>
+		<input type="submit" value="Login"/>
+    </form>
+    </div>
 {% endblock %}

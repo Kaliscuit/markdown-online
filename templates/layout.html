@@ -1,25 +1,72 @@
 <!doctype html>
+<html>
+<head>
 {% block head %}
 <title>代码之美</title>
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/modern/modern.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/modern/modern-responsive.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/google-code-prettify/prettify.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 <script type="text/javascript" src="{{ url_for('static', filename='js/vendor/jquery/jquery-1.9.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/bootstrap/bootstrap.min.js') }}"></script>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/vendor/todc-bootstrap/todc-bootstrap.css') }}">
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/vendor/bootstrap/bootstrap-responsive.min.css') }}">
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/jquery/jquery.mousewheel.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/dialog.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/dropdown.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/accordion.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/buttonset.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/carousel.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/input-control.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/pagecontrol.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/rating.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/slider.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/tile-slider.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/tile-drag.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/google-code-prettify/prettify.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
-<div class=page>
-  <h1><a href="/">代码之美<a/></h1>
-  <div class=metanav>
-    <a href="{{ url_for('add_article') }}">Add</a>
-  {% if not session.logged_in %}
-    <a href="{{ url_for('login') }}">log in</a>
-  {% else %}
-    <a href="{{ url_for('logout') }}">log out</a>
-  {% endif %}
-  </div>
+</head>
+<body class="modern-ui" onload="prettyPrint()">
+	<div class="page">
+		<div class="nav-bar">
+		    <div class="nav-bar-inner padding10">
+		        <span class="pull-menu"></span>
+		        <a href="/"><span class="element brand">
+		            <img class="place-left" src="{{ url_for('static', filename='img/logo32.png') }}" style="height: 20px">
+		            Beautiful Code
+		        </span></a>
+
+		        <div class="divider"></div>
+
+		        <ul class="menu" style="overflow: visible; display: none;">
+		            <li><a href="">Home</a></li>
+		             <li data-role="dropdown"><a href="#">Method</a>
+		                <ul class="dropdown-menu" style="">
+							<li><a href="{{ url_for('add_article') }}">Add</a></li>
+		                    <li class="divider"></li>
+						    {% if not session.logged_in %}
+						  	<li><a href="{{ url_for('login') }}">log in</a></li>
+						    {% else %}
+						    <li><a href="{{ url_for('logout') }}">log out</a></li>
+						    {% endif %}
+		                </ul>
+		            </li>
+
+		            <li><a href="https://github.com/xiaozhui" target="_blank">Github</a></li>
+		        </ul>
+
+		    </div>
+		</div>
+	</div>
+ 	
   {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
+	<div class="message-dialog bg-color-green fg-color-white">
+		{{ message }}
+		<button class="place-right close-parent">关闭</button>
+	</div>
   {% endfor %}
+  <div class='body-container page secondary'>
   {% block body %}{% endblock %}
-</div>
+  </div>
+</body>
+</html>

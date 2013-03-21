@@ -2,8 +2,11 @@
 {% block body %}
 	<ul class=entries>
 		{% for article in articles %}
-		<h2><a href="{{ url_for('read', slug=article.slug)}}">{{ article.title }}</h2>
+		<h2><a href="{{ url_for('read', slug=article.slug)}}"></h2>
 		<em>{{ article.time }}</em>
+		<ul class="nav nav-list bs-docs-sidenav affix-top">
+		          <li><a href="{{ url_for('read', slug=article.slug)}}"><i class="icon-chevron-right"></i>{{ article.title }}</a></li>
+        </ul>
 		{% else %}
 		<li><em>Nothing here</em>
 		{% endfor %}

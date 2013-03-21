@@ -1,18 +1,175 @@
-body            { font-family: sans-serif; background: #eee; }
-a, h1, h2       { color: #377BA8; }
-h1, h2          { font-family: 'Georgia', serif; margin: 0; }
-h1              { border-bottom: 2px solid #eee; }
-h2              { font-size: 1.2em; }
+body {
+    background-color: #fff;
+}
 
-.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
-                  padding: 0.8em; background: white; }
-.entries        { list-style: none; margin: 0; padding: 0; }
-.entries li     { margin: 0.8em 1.2em; }
-.entries li h2  { margin-left: -1em; }
-.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
-.add-entry dl   { font-weight: bold; }
-.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
-                  margin-bottom: 1em; background: #fafafa; }
-.flash          { background: #CEE5F5; padding: 0.5em;
-                  border: 1px solid #AACBE2; }
-.error          { background: #F0D6D6; padding: 0.5em; }
+.page {
+    width: 100%;
+    margin: auto;
+    background-color: #fff;
+}
+.nav-bar {
+	position: fixed;
+}
+.browsers-icons img {
+    float: left;
+    margin-right: 20px;
+}
+
+.body-container {
+	padding-top: 50px;
+}
+
+.github-info {
+}
+
+
+#brand-name {
+    line-height: 24px;
+    margin-top: 2px;
+}
+
+
+hr {
+    border: 0;
+    border-bottom: 1px #ddd dotted;
+    color: #ddd;
+    background-color: #ddd;
+}
+
+p:first-letter {
+  padding-left: 25px;
+}
+
+#social{
+    margin-bottom: 90px;
+}
+#shareme .box{
+    margin:5% 8% 0 8%;
+    width:100%;
+    clear: both;
+}
+#shareme .box a{
+    color:#404040;
+    text-shadow: 0 1px 1px rgba(167,167,167,.4);
+}
+#shareme .box a:hover{
+    text-decoration:none;
+}
+#shareme .count {
+    font-weight:bold;
+    font-size:50px;
+    float:left;
+    border-right:2px solid #57b8d1;
+    line-height:40px;
+    padding-right:10px
+}
+#shareme .share {
+    float:left;
+    margin-left:10px;
+    font-size:20px;
+    width:82px;
+}
+#shareme .buttons {
+    position: absolute;
+    width:294px;
+    background-color:#fff;
+    border: 1px solid rgba(0,0,0,.2);
+    padding:10px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    height: 100px;
+}
+#shareme .button {
+    float:left;
+    max-width:50px;
+    min-width:10px;
+    margin:0 15px 0 0;
+    background-color: transparent;
+}
+#shareme .facebook {
+    margin:0 4px 0 0;
+}
+
+#carousel1 {
+    height: 242px;
+}
+
+#sponsorBlock {
+    height: 300px;
+}
+
+#page-index .carousel .control {
+    top: auto;
+    left: auto;
+    bottom: -40px;
+}
+#page-index .carousel .control.left {
+    right: 100px;
+}
+#page-index .carousel .control.right {
+    right: 30px;
+}
+
+.charms, .app-bar, .message-dialog, .error-bar, .warning-bar, .info-bar {
+    position: absolute;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    .page {
+        width: 100%;
+    }
+    .hero-unit > img {
+        zoom: .6;
+    }
+    .browsers-icons img {
+        zoom: .8;
+    }
+}
+
+@media (max-width: 767px) {
+    .page {
+        width: 100%;
+    }
+
+    .hero-unit > img {
+        zoom: .6;
+    }
+
+    .modern-ui-logo {
+        width: 24px;
+        height: 24px;
+    }
+    .github-info {
+        margin-top: 5px;
+    }
+
+    a, .link {
+        font-size: 9pt;
+    }
+
+    h3 {
+        line-height: 11px;
+    }
+
+    .no-mobile {
+        display: none;
+    }
+
+    #carousel1 {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-unit img {
+        display: none;
+    }
+
+    #jetbrains {
+        display: none;
+    }
+    #brand-name {
+        display: none;
+    }
+}
