@@ -2,7 +2,7 @@
 {% block body %}
 	<ul class=entries>
 		{% for article in articles %}
-		<h2><a href="{{ url_for('read', slug=article.slug)}}"></h2>
+		<h2><a href="{{ url_for('read', slug=article.slug)}}"/></h2>
 		<em>{{ article.time }}</em>
 		<ul class="nav nav-list bs-docs-sidenav affix-top">
 		          <li><a href="{{ url_for('read', slug=article.slug)}}"><i class="icon-chevron-right"></i>{{ article.title }}</a></li>
@@ -11,4 +11,6 @@
 		<li><em>Nothing here</em>
 		{% endfor %}
 	</ul>
+    {{ pagination.info|safe }}
+    {{ pagination.links|safe }}
 {% endblock %}
