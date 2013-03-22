@@ -523,10 +523,6 @@
   border: 1px #ccc solid;
 }
 @media (max-width: 767px) {
-  body {
-    padding-right: 10px;
-    padding-left: 10px !important;
-  }
   [class*="span"],
   .hero-unit {
     float: none;
