@@ -1,12 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
+	<style>
+	.secondary {
+		text-align: center;
+	}
+	</style>
+
 	<ul class=entries>
 		{% for article in articles %}
-		<h2><a href="{{ url_for('read', slug=article.slug)}}"/></h2>
-		<em>{{ article.time }}</em>
-		<ul class="nav nav-list bs-docs-sidenav affix-top">
-		          <li><a href="{{ url_for('read', slug=article.slug)}}"><i class="icon-chevron-right"></i>{{ article.title }}</a></li>
-        </ul>
+		<h2><a href="{{ url_for('read', slug=article.slug)}}"/>{{ article.title }}</a></h2><small>{{ article.time }}</small>
 		{% else %}
 		<li><em>Nothing here</em>
 		{% endfor %}
@@ -14,23 +16,29 @@
 	
 	
 	<div class=pagination>
-		{% if pagination.has_prev %}
-			<a href="{{ url_for_other_page(pagination.page - 1) }}">&laquo; Previous</a>
-		{% endif %}
-		{%- for page in pagination.iter_pages() %}
-			{% if page %}
-				{% if page != pagination.page %}
-					<a href="{{ url_for_other_page(page) }}">{{ page }}</a>
-				{% else %}
-					<strong>{{ page }}</strong>
-			{% endif %}
+		<ul>
+			{% if pagination.has_prev %}
+				<li class="prev"><a href="{{ url_for_other_page(pagination.page - 1) }}"></a></li>
 			{% else %}
-			  <span class=ellipsis>…</span>
+				<li class="prev disabled"><a href="{{ url_for_other_page(pagination.page - 1) }}"></a></li>
 			{% endif %}
-		{%- endfor %}
-		{% if pagination.has_next %}
-			<a href="{{ url_for_other_page(pagination.page + 1) }}">Next &raquo;</a>
-		{% endif %}
+			{%- for page in pagination.iter_pages() %}
+				{% if page %}
+					{% if page != pagination.page %}
+						<li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
+					{% else %}
+						<li class="active"><a>{{ page }}</a></li>
+				{% endif %}
+				{% else %}
+					<li class="spaces"><a>...</a></li>
+				{% endif %}
+			{%- endfor %}
+			{% if pagination.has_next %}
+				<li class="next"><a href="{{ url_for_other_page(pagination.page + 1) }}"></a></li>
+			{% else %}
+				<li class="next disabled"><a href="{{ url_for_other_page(pagination.page + 1) }}"></a></li>
+			{% endif %}
+		</ul>
 	</div>
 	
 {% endblock %}
