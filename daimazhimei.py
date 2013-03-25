@@ -4,7 +4,7 @@ import sqlite3
 import codecs
 import markdown
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, send_from_directory
-from flask.ext.paginate import Pagination
+from extensions.pagination.pagination import Pagination
 
 
 # configuration
@@ -14,7 +14,7 @@ SECRET_KEY = 'SunnyKale Daimazhimei'
 USERNAME = 'demo'
 PASSWORD = 'demo'
 MD_FOLDER = 'md'
-PAGE_COUNT = 2
+PER_PAGE = 2
 
 # app
 app = Flask(__name__)
@@ -66,16 +66,15 @@ def logout():
 
 
 @app.route('/')
-@app.route('/<int:page_number>')
+@app.route('/page/<int:page_number>')
 def index(page_number=1):
     all = g.db.execute('select count(*) from article')
     all = all.fetchall()
-    count = all[0]
-    print count
+    total_count = all[0][0]
     cur = g.db.execute('select title, time, slug from article order by id desc limit ? offset ? ',
-                       [PAGE_COUNT, PAGE_COUNT * (page_number - 1)])
+                       [PER_PAGE, PER_PAGE * (page_number - 1)])
     article = [dict(title=row[0], time=row[1], slug=row[2]) for row in cur.fetchall()]
-    pagination = Pagination(total=6, per_page=PAGE_COUNT, page=page_number)
+    pagination = Pagination(page_number, PER_PAGE, total_count)
     return render_template('index.html', articles=article, pagination=pagination)
 
 
@@ -119,6 +118,11 @@ def read(slug):
 @app.route('/md/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['MD_FOLDER'], filename, as_attachment=True)
+
+
+def url_for_other_page(page):
+    return url_for('index', page_number=page)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 
 if __name__ == '__main__':
