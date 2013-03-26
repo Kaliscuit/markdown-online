@@ -80,6 +80,7 @@ def index(page_number=1):
     articles = []
     result = db_markdown().find({}, {'_id':0}).skip((page_number-1)*PER_PAGE).limit(PER_PAGE)
     for doc in result:
+        doc['create_time'] = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time']))
         articles.append(doc)
     pagination = Pagination(page_number, PER_PAGE, total_count)
     return render_template('index.html', articles=articles, pagination=pagination)
@@ -118,7 +119,7 @@ def add_article():
 def read(slug):
     result = db_markdown().find({'slug':slug}, {'_id':0})
     for doc in result:
-        article = [dict(title=doc['title'], create_time=doc['create_time'], slug=doc['slug'], html=doc['html'])]
+        article = [dict(title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], html=doc['html'])]
     return render_template('article.html', articles=article)
 
 
