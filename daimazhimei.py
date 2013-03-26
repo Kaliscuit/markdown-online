@@ -5,6 +5,8 @@ import codecs
 import markdown
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, send_from_directory
 from extensions.pagination.pagination import Pagination
+# from flask.ext.pymongo import PyMongo
+import pymongo
 
 
 # configuration
@@ -118,6 +120,13 @@ def read(slug):
 @app.route('/md/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['MD_FOLDER'], filename, as_attachment=True)
+
+@app.route('/test/')
+def test():
+    mongo = pymongo.Connection('localhost')
+    db = mongo.daimazhimei
+    db.tag.insert({'time':"12345", 'bingo':"1"})
+    return "BINGO"
 
 
 def url_for_other_page(page):
