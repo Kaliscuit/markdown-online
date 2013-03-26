@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+	<style>
+	.secondary {
+		text-align: center;
+	}
+	</style>
+	<h2>Category : {{ category_name }}</h2>
+
+	<ul class=entries>
+		{% for article in articles %}
+		<h2><a href="{{ url_for('read', slug=article.slug)}}"/>{{ article.title }}</a></h2><small>{{ article.create_time }}</small>
+		{% else %}
+		<li><em>Nothing here</em>
+		{% endfor %}
+	</ul>
+	
+	
+	<div class=pagination>
+		<ul>
+			{% if pagination.has_prev %}
+				<li class="prev"><a href="{{ url_for_other_category_page(category_name, pagination.page - 1) }}"></a></li>
+			{% else %}
+				<li class="prev disabled"><a href="#"></a></li>
+			{% endif %}
+			{%- for page in pagination.iter_pages() %}
+				{% if page %}
+					{% if page != pagination.page %}
+						<li><a href="{{ url_for_other_category_page(category_name, page) }}">{{ page }}</a></li>
+					{% else %}
+						<li class="active"><a>{{ page }}</a></li>
+				{% endif %}
+				{% else %}
+					<li class="spaces"><a>...</a></li>
+				{% endif %}
+			{%- endfor %}
+			{% if pagination.has_next %}
+				<li class="next"><a href="{{ url_for_other_category_page(category_name, pagination.page + 1) }}"></a></li>
+			{% else %}
+				<li class="next disabled"><a href="#"></a></li>
+			{% endif %}
+		</ul>
+	</div>
+	
+{% endblock %}

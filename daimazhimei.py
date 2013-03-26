@@ -7,12 +7,13 @@ from extensions.pagination.pagination import Pagination
 import pymongo
 import datetime
 import time
+import os
 
 
 # configuration
 DATABASE_HOST = 'localhost'
 DATABASE_PORT = 27017
-DEBUG = False
+DEBUG = True
 SECRET_KEY = 'SunnyKale Daimazhimei'
 USERNAME = 'demo'
 PASSWORD = 'demo'
@@ -33,6 +34,11 @@ def mongo_conn():
 def db_markdown():
     conn = mongo_conn()
     return conn.daimazhimei.markdown
+
+
+def db_category():
+    conn = mongo_conn()
+    return conn.daimazhimei.category
 
 
 @app.before_request
@@ -94,16 +100,22 @@ def add_article():
         else:
             title = request.form['title']
             slug = request.form['slug']
+            category = request.form['category']
+            tag = request.form['tag'].split(',')
             md = request.form['markdown']
+            # add new category
+            query = {'category_name':category}
+            if not db_category().find(query).count():
+                db_category().insert({'category_name':category})
             # convert html
             html = markdown.markdown(md)
             create_time = time.time()
             # generate filename
             filename = slug + '.md'
             # save to mongodb
-            db_markdown().insert({'title':title, 'create_time':create_time, 'slug':slug, 'file':filename, 'html':html})
+            db_markdown().insert({'title':title, 'create_time':create_time, 'slug':slug, 'category':category, 'tag':tag, 'file':filename, 'html':html})
             # save .md doc
-            file = codecs.open('md/' + filename, mode='w', encoding="utf-8")
+            file = codecs.open(MD_FOLDER+'/' + filename, mode='w', encoding="utf-8")
             file.write(md)
             file.close()
             flash('New entry was successfully posted')
@@ -118,10 +130,65 @@ def add_article():
 @app.route('/read/<slug>')
 def read(slug):
     try:
-        result = db_markdown().find({'slug':slug}, {'_id':0})
+        result = db_markdown().find({'slug':slug})
         for doc in result:
-            article = [dict(title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], html=doc['html'])]
+            article = [dict(id=doc['_id'], title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], category=doc['category'], tag=doc['tag'], file=doc['file'], html=doc['html'])]
         return render_template('article.html', articles=article)
+    except:
+        abort(404)
+        
+        
+@app.route('/remove/<slug>')
+def remove(slug):
+        try:
+            if not session.get('logged_in'):
+                return redirect(url_for('login'))
+            else:
+                query = {'slug':slug}
+                result = db_markdown().find(query)
+                for doc in result:
+                    category = doc['category']
+                if db_markdown().find({'category':category}).count() == 1:
+                    db_category().remove({'category_name':category})
+                db_markdown().remove(query)
+                os.remove(MD_FOLDER+'/' + slug+'.md')
+                return redirect(url_for('index'))
+        except:
+            abort(404)
+        
+        
+@app.route('/category/<category_name>')
+@app.route('/category/<category_name>/page/<int:page_number>')
+def category(category_name, page_number=1):
+    try:
+        query = {'category':category_name}
+        total_count = db_markdown().find(query).count()
+        print total_count
+        articles = []
+        result = db_markdown().find(query, {'_id':0}).skip((page_number-1)*PER_PAGE).limit(PER_PAGE)
+        for doc in result:
+            doc['create_time'] = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time']))
+            articles.append(doc)
+        pagination = Pagination(page_number, PER_PAGE, total_count)
+        return render_template('category.html', category_name=category_name, articles=articles, pagination=pagination)
+    except:
+        abort(404)
+        
+        
+@app.route('/tag/<tag_name>')
+@app.route('/tag/<tag_name>/page/<int:page_number>')
+def tag(tag_name, page_number=1):
+    try:
+        query = {'tag':tag_name}
+        total_count = db_markdown().find(query).count()
+        print total_count
+        articles = []
+        result = db_markdown().find(query, {'_id':0}).skip((page_number-1)*PER_PAGE).limit(PER_PAGE)
+        for doc in result:
+            doc['create_time'] = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time']))
+            articles.append(doc)
+        pagination = Pagination(page_number, PER_PAGE, total_count)
+        return render_template('tag.html', tag_name=tag_name, articles=articles, pagination=pagination)
     except:
         abort(404)
 
@@ -134,6 +201,16 @@ def download_file(filename):
 def url_for_other_page(page):
     return url_for('index', page_number=page)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
+
+def url_for_other_category_page(category_name, page):
+    return url_for('category', category_name=category_name, page_number=page)
+app.jinja_env.globals['url_for_other_category_page'] = url_for_other_category_page
+
+
+def url_for_other_tag_page(tag_name, page):
+    return url_for('tag', tag_name=tag_name, page_number=page)
+app.jinja_env.globals['url_for_other_tag_page'] = url_for_other_tag_page
 
 
 if __name__ == '__main__':
