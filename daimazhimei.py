@@ -12,7 +12,7 @@ import time
 # configuration
 DATABASE_HOST = 'localhost'
 DATABASE_PORT = 27017
-DEBUG = True
+DEBUG = False
 SECRET_KEY = 'SunnyKale Daimazhimei'
 USERNAME = 'demo'
 PASSWORD = 'demo'
