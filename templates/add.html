@@ -1,52 +1,48 @@
 {% extends "layout.html" %}
 {% block body %}
-	<style>
-	.secondary {
-		width: 80% !important;
-	}
-	</style>
-	<div class="page-header">
-        <div class="page-header-content">
-            <h1>Add<small> Form</small></h1>
-            <a class="back-button big page-back" href="/"></a>
-        </div>
-    </div>
-	<h2></h2>
+	<ul class="breadcrumb">
+	  <li><a href="{{ url_for('index') }}">Home</a> <span class="divider">/</span></li>
+	  <li class="active">Add</li>
+	</ul>
 	{% if error %}
-	<div class="span5">
-        <div class="notices">
-            <div class="bg-color-red">
-                <a class="close close-parent" href="#"></a>
-                <div class="notice-header fg-color-yellow">Error:</div>
-                <div class="notice-text">{{ error }}</div>
-            </div>
-        </div>
-    </div>
+	<div class="alert alert-error">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  {{ error }}
+		</div>
 	{% endif %}
 	
-	<div class="span10">
-
-    <form method="post" action="{{ url_for('add_article') }}">
-        <div class="input-control text">
-            <input type="text" name="title" placeholder="Title">
-            <button class="helper" tabindex="-1" type="button"></button>
-        </div>
-        <div class="input-control text">
-            <input type="text" name="slug" placeholder="Slug">
-            <button class="helper" tabindex="-1" type="button"></button>
-        </div>
-        <div class="input-control text">
-        	<input type="text" name="category" placeholder="Category">
-        	<button class="helper" tabindex="-1" type="button"></button>
-        </div>
-        <div class="input-control text">
-        	<input type="text" name="tag" placeholder="Tag">
-        	<button class="helper" tabindex="-1" type="button"></button>
-        </div>
-		<div class="input-control textarea">
-            <textarea name="markdown"></textarea>
-        </div>
-		<input type="submit" value="Share"/>
-    </form>
+	<div class="span10 offset1">
+	    <form class="form-horizontal" method="post" action="{{ url_for('add_article') }}">
+		    <div class="control-group">
+		    	<div class="controls">
+		      		<input class="span5" type="text" name="title" placeholder="Title">
+		    	</div>
+		    </div>
+			<div class="control-group">
+			    <div class="controls">
+			        <input class="span5" type="text" name="slug" placeholder="Slug">
+			    </div>
+			</div>
+			<div class="control-group">
+			    <div class="controls">
+			        <input class="span5" type="text" name="category" placeholder="Category">
+			    </div>
+			</div>
+			<div class="control-group">
+			    <div class="controls">
+			        <input class="span5" type="text" name="tag" placeholder="Tag">
+			    </div>
+			</div>
+			<div class="control-group">
+			    <div class="controls">
+			        <textarea class="span5" rows="10" name="markdown"></textarea>
+			    </div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<input class="btn" type="submit" value="Share"/>
+				</div>
+			</div>
+	    </form>
     </div>
 {% endblock %}

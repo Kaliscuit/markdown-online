@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 {% block body %}
-	<style>
-	.secondary {
-		text-align: center;
-	}
-	</style>
 
-	<ul class=entries>
-		{% for article in articles %}
-		<h2><a href="{{ url_for('read', slug=article.slug)}}"/>{{ article.title }}</a></h2><small>{{ article.create_time }}</small>
-		{% else %}
-		<li><em>Nothing here</em>
-		{% endfor %}
-	</ul>
-	
-	
-	<div class=pagination>
-		<ul>
-			{% if pagination.has_prev %}
-				<li class="prev"><a href="{{ url_for_other_page(pagination.page - 1) }}"></a></li>
+
+	<div class="span10 offset1">
+		<ul class="item-list">
+			{% for article in articles %}
+			<li>
+				<a href="{{ url_for('category', category_name=article.category) }}"/><span class="label item-list-category">{{ article.category }}</span></a>
+				<a href="{{ url_for('read', slug=article.slug)}}" class="item-list-title"/>{{ article.title }}</a>
+				<small class="pull-right item-list-time">{{ article.create_time }}</small>
+			</li>
 			{% else %}
-				<li class="prev disabled"><a href="#"></a></li>
+			<li><em>Nothing here</em>
+			{% endfor %}
+		</ul>
+	
+		<div class="pagination pagination-centered">
+		  <ul>
+			{% if pagination.has_prev %}
+			<li><a href="{{ url_for_other_page(pagination.page - 1) }}">«</a></li>
+			{% else %}
+			<li class="disabled"><a href="#">«</a></li>
 			{% endif %}
-			{%- for page in pagination.iter_pages() %}
+			{% for page in pagination.iter_pages() %}
 				{% if page %}
 					{% if page != pagination.page %}
 						<li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
@@ -32,13 +32,15 @@
 				{% else %}
 					<li class="spaces"><a>...</a></li>
 				{% endif %}
-			{%- endfor %}
+			{% endfor %}
 			{% if pagination.has_next %}
-				<li class="next"><a href="{{ url_for_other_page(pagination.page + 1) }}"></a></li>
+			<li><a href="{{ url_for_other_page(pagination.page + 1) }}">»</a></li>
 			{% else %}
-				<li class="next disabled"><a href="#"></a></li>
+			<li class="disabled"><a href="#">»</a></li>
 			{% endif %}
-		</ul>
+		  </ul>
+		</div>
 	</div>
+
 	
 {% endblock %}

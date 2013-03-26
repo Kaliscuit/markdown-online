@@ -2,71 +2,61 @@
 <html>
 <head>
 {% block head %}
-<title>代码之美</title>
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/modern/modern.css') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/modern/modern-responsive.css') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/vendor/google-code-prettify/prettify.css') }}">
-<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/jquery/jquery-1.9.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/jquery/jquery.mousewheel.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/dialog.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/dropdown.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/accordion.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/buttonset.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/carousel.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/input-control.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/pagecontrol.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/rating.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/slider.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/tile-slider.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/modern/tile-drag.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/vendor/google-code-prettify/prettify.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
+<title>Beautiful Code</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}">
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+  <script src="{{ url_for('static', filename='js/html5shiv.js') }}"></script>
+<![endif]-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
 {% endblock %}
 </head>
-<body class="modern-ui" onload="prettyPrint()">
-	<div class="page">
-		<div class="nav-bar">
-		    <div class="nav-bar-inner padding10">
-		        <span class="pull-menu"></span>
-		        <a href="/"><span class="element brand">
-		            <img class="place-left" src="{{ url_for('static', filename='img/logo32.png') }}" style="height: 20px">
-		            Beautiful Code
-		        </span></a>
-
-		        <div class="divider"></div>
-
-		        <ul class="menu" style="overflow: visible; display: none;">
-		            <li><a href="">Home</a></li>
-		             <li data-role="dropdown"><a href="#">Method</a>
-		                <ul class="dropdown-menu" style="">
-							<li><a href="{{ url_for('add_article') }}">Add</a></li>
-		                    <li class="divider"></li>
-						    {% if not session.logged_in %}
-						  	<li><a href="{{ url_for('login') }}">log in</a></li>
-						    {% else %}
-						    <li><a href="{{ url_for('logout') }}">log out</a></li>
-						    {% endif %}
-		                </ul>
-		            </li>
-
-		            <li><a href="https://github.com/xiaozhui" target="_blank">Github</a></li>
-		        </ul>
-
-		    </div>
-		</div>
-	</div>
- 	
-  {% for message in get_flashed_messages() %}
-	<div class="message-dialog bg-color-green fg-color-white">
-		{{ message }}
-		<button class="place-right close-parent">关闭</button>
-	</div>
-  {% endfor %}
-  <div class='body-container page secondary'>
-  {% block body %}{% endblock %}
-  </div>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+    	<div class="container">
+    	  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    		<span class="icon-bar"></span>
+    		<span class="icon-bar"></span>
+    		<span class="icon-bar"></span>
+    	  </button>
+    	  <a class="brand" href="{{ url_for('index') }}"><img class="brand-logo" src="{{ url_for('static', filename='img/logo.png') }}">Beautiful Code</a>
+    	  <div class="nav-collapse collapse">
+	    	<p class="navbar-text pull-right">
+	    	  {% if session.logged_in %}
+	    		<a href="{{ url_for('logout') }}" class="navbar-link">log out</a>
+	    	  {% else %}
+	    	  	<a href="{{ url_for('login') }}" class="navbar-link">log in</a>
+	    	  {% endif %}
+	    	</p>
+    		<ul class="nav">
+    		  <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+    		  <li><a href="#about">About</a></li>
+    		  <li><a href="https://github.com/xiaozhui" target="_blank">Github</a></li>
+    		</ul>
+    	  </div><!--/.nav-collapse -->
+    	</div>
+      </div>
+    </div>
+    <div class="container">
+      
+      {% for message in get_flashed_messages() %}
+        <div class="alert alert-info">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+    	  {{ message }}
+        </div>
+      {% endfor %}
+      
+      <div class="row">
+      {% block body %}{% endblock %}
+      </div>
+      
+    </div>
 </body>
 </html>

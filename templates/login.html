@@ -1,41 +1,37 @@
 {% extends "layout.html" %}
 {% block body %}
-	<style>
-	.secondary {
-		width: 80% !important;
-	}
-	</style>
-	<div class="page-header">
-        <div class="page-header-content">
-            <h1>Login<small> Form</small></h1>
-            <a class="back-button big page-back" href="/"></a>
-        </div>
-    </div>
-	<h2></h2>
+	<ul class="breadcrumb">
+	  <li><a href="{{ url_for('index') }}">Home</a> <span class="divider">/</span></li>
+	  <li class="active">Login</li>
+	</ul>
 	{% if error %}
-	<div class="span5">
-        <div class="notices">
-            <div class="bg-color-red">
-                <a class="close close-parent" href="#"></a>
-                <div class="notice-header fg-color-yellow">Error:</div>
-                <div class="notice-text">{{ error }}</div>
-            </div>
-        </div>
-    </div>
+	<div class="alert alert-error">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  {{ error }}
+		</div>
 	{% endif %}
 	
-	<div class="span5">
 
-    <form method="post" action="{{ url_for('login') }}">
-        <div class="input-control text">
-            <input type="text" name="username" placeholder="Username">
-            <button class="helper" tabindex="-1" type="button"></button>
-        </div>
-		<div class="input-control password">
-            <input type="password" name="password" placeholder="Password">
-            <button class="helper" tabindex="-1" type="button"></button>
-        </div>
-		<input type="submit" value="Login"/>
-    </form>
-    </div>
+	<div class="span10 offset1">
+		<form class="form-horizontal" method="post" action="{{ url_for('login') }}">
+		  <div class="control-group">
+			<label class="control-label" for="inputUsername">Username</label>
+			<div class="controls">
+			  <input type="text" id="inputUsername" name="username" placeholder="Username">
+			</div>
+		  </div>
+		  <div class="control-group">
+			<label class="control-label" for="inputPassword">Password</label>
+			<div class="controls">
+			  <input type="password" id="inputPassword" name="password" placeholder="Password">
+			</div>
+		  </div>
+		  <div class="control-group">
+			<div class="controls">
+			  <button type="submit" class="btn">Sign in</button>
+			</div>
+		  </div>
+		</form>
+	</div>
+	
 {% endblock %}

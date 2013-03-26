@@ -1,41 +1,42 @@
 {% extends "layout.html" %}
 {% block body %}
-	<style>
-	.secondary {
-		width: 80% !important;
-	}
-	</style>
-	<ul class=entries>
-		{% for article in articles %}
-		<h2>{{ article.title }}</h2>
-		<li><a href={{ url_for('download_file', filename=article.file)}}>Download {{ article.file }}</a></li>
-		{% if session.logged_in %}
-		<li><a href={{ url_for('remove', slug=article.slug) }}>Remove</a></li>
-	    {% endif %}
-		<em>{{ article.create_time }}</em>
-		<li>Category: <a href="{{ url_for('category', category_name=article.category) }}"/>{{ article.category }}</a></li>
-		<li>Tag: 
-			{% for i in article.tag %}
-			<small><a href="{{ url_for('tag', tag_name=i) }}"/>{{ i }}</a></small>
-			{% endfor %}
-		</li>
-		{{ article.html|safe }}
-		{% else %}
-		<li><em>Nothing here</em>
-		{% endfor %}
+	<ul class="breadcrumb">
+	  <li><a href="{{ url_for('index') }}">Home</a> <span class="divider">/</span></li>
+	  <li class="active">Read</li>
 	</ul>
-	<!-- Duoshuo Comment BEGIN -->
+	
+	<div class="span10 offset1">
+			{% for article in articles %}
+			<h1>{{ article.title }}</h1>
+			<li><a href={{ url_for('download_file', filename=article.file)}}>Download {{ article.file }}</a></li>
+			{% if session.logged_in %}
+			<li><a href={{ url_for('remove', slug=article.slug) }}>Remove</a></li>
+		    {% endif %}
+			<em>{{ article.create_time }}</em>
+			<li>Category: <a href="{{ url_for('category', category_name=article.category) }}"/>{{ article.category }}</a></li>
+			<li>Tag: 
+				{% for i in article.tag %}
+				<small><a href="{{ url_for('tag', tag_name=i) }}"/>{{ i }}</a></small>
+				{% endfor %}
+			</li>
+			{{ article.html|safe }}
+			{% else %}
+			<li><em>Nothing here</em>
+			{% endfor %}
+		
+		<!-- Duoshuo Comment BEGIN -->
 		<div class="ds-thread"></div>
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"daimazhimei"};
-		(function() {
-			var ds = document.createElement('script');
-			ds.type = 'text/javascript';ds.async = true;
-			ds.src = 'http://static.duoshuo.com/embed.js';
-			ds.charset = 'UTF-8';
-			(document.getElementsByTagName('head')[0] 
-			|| document.getElementsByTagName('body')[0]).appendChild(ds);
-		})();
+		<script type="text/javascript">
+			var duoshuoQuery = {short_name:"daimazhimei"};
+				(function() {
+					var ds = document.createElement('script');
+					ds.type = 'text/javascript';ds.async = true;
+					ds.src = 'http://static.duoshuo.com/embed.js';
+					ds.charset = 'UTF-8';
+					(document.getElementsByTagName('head')[0] 
+					|| document.getElementsByTagName('body')[0]).appendChild(ds);
+				})();
 		</script>
-	<!-- Duoshuo Comment END -->
+		<!-- Duoshuo Comment END -->
+	</div>
 {% endblock %}
