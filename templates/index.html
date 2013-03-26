@@ -20,7 +20,7 @@
 			{% if pagination.has_prev %}
 				<li class="prev"><a href="{{ url_for_other_page(pagination.page - 1) }}"></a></li>
 			{% else %}
-				<li class="prev disabled"><a href="{{ url_for_other_page(pagination.page - 1) }}"></a></li>
+				<li class="prev disabled"><a href="#"></a></li>
 			{% endif %}
 			{%- for page in pagination.iter_pages() %}
 				{% if page %}
@@ -36,7 +36,7 @@
 			{% if pagination.has_next %}
 				<li class="next"><a href="{{ url_for_other_page(pagination.page + 1) }}"></a></li>
 			{% else %}
-				<li class="next disabled"><a href="{{ url_for_other_page(pagination.page + 1) }}"></a></li>
+				<li class="next disabled"><a href="#"></a></li>
 			{% endif %}
 		</ul>
 	</div>
