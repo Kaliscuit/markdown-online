@@ -9,7 +9,7 @@
 		{% for article in articles %}
 		<h2>{{ article.title }}</h2>
 		<a href={{ url_for('download_file', filename=article.slug+'.md')}}>Download {{ article.slug }}.md</a>
-		<em>{{ article.time }}</em>
+		<em>{{ article.create_time }}</em>
 		{{ article.html|safe }}
 		{% else %}
 		<li><em>Nothing here</em>

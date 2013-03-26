@@ -1,16 +1,17 @@
 # imports
 from contextlib import closing
-import sqlite3
 import codecs
 import markdown
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, send_from_directory
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, send_from_directory, jsonify
 from extensions.pagination.pagination import Pagination
-# from flask.ext.pymongo import PyMongo
 import pymongo
+import datetime
+import time
 
 
 # configuration
-DATABASE = 'db/daimazhimei.db'
+DATABASE_HOST = 'localhost'
+DATABASE_PORT = 27017
 DEBUG = True
 SECRET_KEY = 'SunnyKale Daimazhimei'
 USERNAME = 'demo'
@@ -24,25 +25,29 @@ app.config.from_object(__name__)
 app.config.from_envvar('DAIMAZHIMEI_SETTINGS', silent=True)
 
 
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource('db/schema.sql') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+def mongo_conn():
+    connection = pymongo.Connection(host=DATABASE_HOST, port=DATABASE_PORT)
+    return connection
+    
+    
+def db_markdown():
+    conn = mongo_conn()
+    return conn.daimazhimei.markdown
 
 
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    try:
+        conn = mongo_conn()
+    except:
+        abort(403)
+    # g.db = connect_db()
 
 
 @app.teardown_request
 def teardown_request(exception):
-    g.db.close()
+    pass
+    # g.db.close()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -70,14 +75,14 @@ def logout():
 @app.route('/')
 @app.route('/page/<int:page_number>')
 def index(page_number=1):
-    all = g.db.execute('select count(*) from article')
-    all = all.fetchall()
-    total_count = all[0][0]
-    cur = g.db.execute('select title, time, slug from article order by id desc limit ? offset ? ',
-                       [PER_PAGE, PER_PAGE * (page_number - 1)])
-    article = [dict(title=row[0], time=row[1], slug=row[2]) for row in cur.fetchall()]
+    total_count = db_markdown().find().count()
+    print total_count
+    articles = []
+    result = db_markdown().find({}, {'_id':0}).skip((page_number-1)*PER_PAGE).limit(PER_PAGE)
+    for doc in result:
+        articles.append(doc)
     pagination = Pagination(page_number, PER_PAGE, total_count)
-    return render_template('index.html', articles=article, pagination=pagination)
+    return render_template('index.html', articles=articles, pagination=pagination)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -91,12 +96,11 @@ def add_article():
             md = request.form['markdown']
             # convert html
             html = markdown.markdown(md)
+            create_time = time.time()
             # generate filename
             filename = slug + '.md'
-            # save to SQLite
-            g.db.execute('insert into article (title, slug, file, html) values (?, ?, ?, ?)',
-                         [title, slug, filename, html])
-            g.db.commit()
+            # save to mongodb
+            db_markdown().insert({'title':title, 'create_time':create_time, 'slug':slug, 'file':filename, 'html':html})
             # save .md doc
             file = codecs.open('md/' + filename, mode='w', encoding="utf-8")
             file.write(md)
@@ -112,8 +116,9 @@ def add_article():
 
 @app.route('/read/<slug>')
 def read(slug):
-    cur = g.db.execute('select title, time, html from article where slug = ?', [slug])
-    article = [dict(title=row[0], time=row[1], html=row[2], slug=slug) for row in cur.fetchall()]
+    result = db_markdown().find({'slug':slug}, {'_id':0})
+    for doc in result:
+        article = [dict(title=doc['title'], create_time=doc['create_time'], slug=doc['slug'], html=doc['html'])]
     return render_template('article.html', articles=article)
 
 
@@ -123,10 +128,18 @@ def download_file(filename):
 
 @app.route('/test/')
 def test():
-    mongo = pymongo.Connection('localhost')
-    db = mongo.daimazhimei
-    db.tag.insert({'time':"12345", 'bingo':"1"})
-    return "BINGO"
+    # mongo = mongo_conn()
+    # db = mongo.daimazhimei
+    # dict2 = {'name': 'earth', 'port': 170280}
+    # res = db.markdown.find({}, {'_id':0}).limit(4)
+    # docs = []
+    # for doc in res:
+    #     docs.append(doc)
+    # print docs
+    # return str(docs)
+    table = db_markdown()
+    count = table.find().count()
+    return str(count)
 
 
 def url_for_other_page(page):
