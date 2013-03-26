@@ -117,30 +117,18 @@ def add_article():
 
 @app.route('/read/<slug>')
 def read(slug):
-    result = db_markdown().find({'slug':slug}, {'_id':0})
-    for doc in result:
-        article = [dict(title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], html=doc['html'])]
-    return render_template('article.html', articles=article)
+    try:
+        result = db_markdown().find({'slug':slug}, {'_id':0})
+        for doc in result:
+            article = [dict(title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], html=doc['html'])]
+        return render_template('article.html', articles=article)
+    except:
+        abort(404)
 
 
 @app.route('/md/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['MD_FOLDER'], filename, as_attachment=True)
-
-@app.route('/test/')
-def test():
-    # mongo = mongo_conn()
-    # db = mongo.daimazhimei
-    # dict2 = {'name': 'earth', 'port': 170280}
-    # res = db.markdown.find({}, {'_id':0}).limit(4)
-    # docs = []
-    # for doc in res:
-    #     docs.append(doc)
-    # print docs
-    # return str(docs)
-    table = db_markdown()
-    count = table.find().count()
-    return str(count)
 
 
 def url_for_other_page(page):
