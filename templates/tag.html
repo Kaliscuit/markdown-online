@@ -9,7 +9,7 @@
 		<ul class="item-list">
 			{% for article in articles %}
 			<li>
-				<a href="{{ url_for('tag', tag_name=article.tag) }}"/><span class="label item-list-tag">{{ article.category }}</span></a>
+				<a href="{{ url_for('tag', tag_name=article.tag) }}"/><span class="label label-success item-list-tag">{{ article.category }}</span></a>
 				<a href="{{ url_for('read', slug=article.slug)}}" class="item-list-title"/>{{ article.title }}</a>
 				<small class="pull-right item-list-time">{{ article.create_time }}</small>
 			</li>
