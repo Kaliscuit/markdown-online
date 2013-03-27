@@ -5,7 +5,7 @@ body {padding-top: 60px;}
 }
 .brand-logo {height:10px;margin-right:5px;}
 .item-list {padding-top: 5px;}
-.item-list li {border-bottom: 1px solid #F4F4F4;display: block;line-height: 2em;clear: both;}
+.item-list li {border-bottom: 1px solid #F4F4F4;display: block;line-height: 40px;clear: both;}
 .item-list-category {text-align: center;width: 50px;}
 .item-list-title {margin-left: 5px;}
 .item-list-time {color: gray}

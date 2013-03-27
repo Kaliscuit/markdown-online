@@ -13,12 +13,12 @@ import os
 # configuration
 DATABASE_HOST = 'localhost'
 DATABASE_PORT = 27017
-DEBUG = True
+DEBUG = False
 SECRET_KEY = 'SunnyKale Daimazhimei'
 USERNAME = 'demo'
 PASSWORD = 'demo'
 MD_FOLDER = 'md'
-PER_PAGE = 2
+PER_PAGE = 20
 
 # app
 app = Flask(__name__)
@@ -158,6 +158,18 @@ def remove(slug):
                 return redirect(url_for('index'))
         except:
             abort(404)
+            
+            
+@app.route('/category/')
+def get_category():
+    try:
+        categories = []
+        result = db_category().find({}, {'_id':0})
+        for doc in result:
+            categories.append(doc)
+        return render_template('categories.html', categories=categories)
+    except:
+        abort(404)
         
         
 @app.route('/category/<category_name>')

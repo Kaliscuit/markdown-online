@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+	<ul class="breadcrumb">
+	  <li><a href="{{ url_for('index') }}">Home</a> <span class="divider">/</span></li>
+	  <li class="active">Categories</li>
+	</ul>
+	
+	<div class="span10 offset1">
+		<ul class="item-list">
+			{% for category in categories %}
+			<li>
+				<a href="{{ url_for('category', category_name=category.category_name) }}"/>{{ category.category_name }}</a>
+			</li>
+			{% else %}
+			<li><em>Nothing here</em>
+			{% endfor %}
+		</ul>
+	</div>
+	
+{% endblock %}
