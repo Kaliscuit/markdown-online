@@ -28,21 +28,25 @@
     	  </button>
     	  <a class="brand" href="{{ url_for('index') }}"><img class="brand-logo" src="{{ url_for('static', filename='img/logo.png') }}">Beautiful Code</a>
     	  <div class="nav-collapse collapse">
-	    	<p class="navbar-text pull-right">
-	    	  {% if session.logged_in %}
-	    		<a href="{{ url_for('logout') }}" class="navbar-link">Log out</a>
-	    	  {% else %}
-	    	  	<a href="{{ url_for('login') }}" class="navbar-link">Log in</a>
-	    	  {% endif %}
-	    	</p>
     		<ul class="nav">
     		  <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
 			  <li><a href="{{ url_for('get_category') }}">Categories</a></li>
-	    	  {% if session.logged_in %}
-				  <li><a href="{{ url_for('add_article') }}" class="navbar-link">Add</a></li>
-	    	  {% endif %}
     		  <li><a href="https://github.com/xiaozhui" target="_blank">Github</a></li>
     		</ul>
+			<ul class="nav pull-right">
+  	    	  {% if session.logged_in %}
+				<li class="dropdown">
+		            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as {{ session.username }}<b class="caret"></b></a>
+		            <ul class="dropdown-menu">
+					  <li><a href="{{ url_for('add_article') }}" class="navbar-link">Add</a></li>
+		              <li class="divider"></li>
+  		              <li><a href="{{ url_for('logout') }}">Log out</a></li>
+		            </ul>
+				 </li>
+  	    	  {% else %}
+  	    	  	<li><a href="{{ url_for('login') }}" class="navbar-link">Log in</a></li>
+  	    	  {% endif %}
+			</ul>
     	  </div><!--/.nav-collapse -->
     	</div>
       </div>

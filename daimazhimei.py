@@ -69,6 +69,7 @@ def login():
                 error = 'Invalid password'
             else:
                 session['logged_in'] = True
+                session['username'] = request.form['username']
                 flash('You were logged in')
                 return redirect(url_for('index'))
         return render_template('login.html', error=error)
@@ -106,6 +107,7 @@ def add_article():
             category = request.form['category']
             tag = request.form['tag'].split(',')
             md = request.form['markdown']
+            username = session['username']
             # add new category
             query = {'category_name':category}
             if not db_category().find(query).count():
@@ -116,7 +118,7 @@ def add_article():
             # generate filename
             filename = slug + '.md'
             # save to mongodb
-            db_markdown().insert({'title':title, 'create_time':create_time, 'slug':slug, 'category':category, 'tag':tag, 'file':filename, 'html':html})
+            db_markdown().insert({'title':title, 'create_time':create_time, 'slug':slug, 'category':category, 'tag':tag, 'username':username, 'file':filename, 'html':html})
             # save .md doc
             file = codecs.open(MD_FOLDER+'/' + filename, mode='w', encoding="utf-8")
             file.write(md)
@@ -135,7 +137,7 @@ def read(slug):
     try:
         result = db_markdown().find({'slug':slug})
         for doc in result:
-            article = [dict(id=doc['_id'], title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], category=doc['category'], tag=doc['tag'], file=doc['file'], html=doc['html'])]
+            article = [dict(id=doc['_id'], title=doc['title'], create_time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(doc['create_time'])), slug=doc['slug'], category=doc['category'], tag=doc['tag'], file=doc['file'], username=doc['username'], html=doc['html'])]
         return render_template('article.html', articles=article)
     except:
         abort(404)
