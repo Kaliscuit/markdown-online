@@ -33,12 +33,12 @@ def mongo_conn():
     
 def db_markdown():
     conn = mongo_conn()
-    return conn.daimazhimei.markdown
+    return conn.blog.markdown
 
 
 def db_category():
     conn = mongo_conn()
-    return conn.daimazhimei.category
+    return conn.blog.category
 
 
 @app.before_request
