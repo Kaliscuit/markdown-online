@@ -1,9 +1,0 @@
-<uwsgi>
-    <socket>127.0.0.1:9001</socket>
-    <pythonpath>/srv/daimazhimei.com/www/</pythonpath>
-    <pyhome>/srv/daimazhimei.com/www/venv</pyhome>
-    <chdir>/srv/daimazhimei.com/www/</chdir>
-    <module>daimazhimei</module>
-    <callable>app</callable>
-</uwsgi>
-

@@ -12,9 +12,9 @@ import os
 
 # configuration
 DATABASE_HOST = 'localhost'
-DATABASE_PORT = 27017
+DATABASE_PORT = 20517
 DEBUG = False
-SECRET_KEY = 'SunnyKale Daimazhimei'
+SECRET_KEY = 'Olab blog'
 USERNAME = 'demo'
 PASSWORD = 'demo'
 MD_FOLDER = 'md'

@@ -1,1 +1,0 @@
-[点击下载](http://sunnykale-file-upload.googlecode.com/files/Apple_RMBP_Samsung_zhpenn.zip)
